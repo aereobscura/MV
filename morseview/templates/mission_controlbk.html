@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+	<div class="media">
+		<H1>MISSION CONTROL</H1>
+		<iframe id="pi_stream" class="picam" src="{{ v_src }}"/>
+		<!--99.121.229.178 "http://192.168.1.191:8081"-->
+		</iframe>
+	</div>
+
+{% endblock content%}
+{% block sidebar %}
+	{% if current_user.is_authenticated %}
+		<form method="POST" action="">
+
+			{{ form.hidden_tag() }}
+
+			<fieldset>
+				<legend>{{ legend }}</legend>
+				<div class="form-check">
+					{{ form.FL_motor(class="form-check-input") }}
+					{{ form.FL_motor.label(class="form-check-label") }}
+				</div>
+				<!--<div class="form-check">
+					{{ form.green_on(class="form-check-input") }}
+					{{ form.green_on.label(class="form-check-label") }}
+				</div>
+				<br>
+				<div class="form-group">
+					{{ form.message.label(class="form-control-label") }}
+					
+					{% if form.message.errors %}
+						{{ form.message(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.message.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+
+					{{ form.message(class="form-control form-control-lg") }}
+
+					{% endif %}
+				</div>
+				<br>
+				<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+				</div>-->
+			</fieldset>
+		</form>
+	{% else %}
+		<h3>Please Login</h3>
+	    <p>You must be logged in to interact with MORSEVIEW. Please <a href="{{ url_for('users.login') }}">log in</a> or <a href="{{ url_for('users.register') }}">register</a>
+	    </p>	
+	{% endif %}
+{% endblock sidebar %}

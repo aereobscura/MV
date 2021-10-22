@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+	<div class="media">
+		<H1>MISSION CONTROL</H1>
+		<img id="pi_stream" class="picam" src="{{ v_src }}"/>
+		<!--99.121.229.178 "http://192.168.1.191:8081"-->
+	</div>
+
+{% endblock content%}
+{% block sidebar %}
+	{% if current_user.is_authenticated %}
+		
+		<div class="controlPanel">
+			
+			<div class="sliderBox frontSlider" id="FLsliderBox">
+				<input type="range" orient="vertical" min="-100" max="100" value="0" class="slider" id="FL_slider">
+			</div>
+
+			<div class="sliderBox frontSlider" id="FRsliderBox">
+				<input type="range" orient="vertical" min="-100" max="100" value="0" class="slider" id="FR_slider">
+			</div>
+			
+			<div class="btnBox">
+				<button class="btn" id="engage">ENGAGE</button>
+			</div>
+			<div class="sliderBox rearSlider" id="RRsliderBox">
+				<input type="range" orient="vertical" min="-100" max="100" value="0" class="slider" id="RR_slider">
+			</div>
+
+			<div class="sliderBox rearSlider" id="RLsliderBox">
+				<input type="range" orient="vertical" min="-100" max="100" value="0" class="slider" id="RL_slider">
+			</div>
+			
+			<div class="Indicator frontIndicator leftIndicator" id="FLInd">
+				<h3>Front Left</h3>
+				<p id="FLspeedometer">0</p>
+			</div>
+			<div class="Indicator frontIndicator rightIndicator" id="FRInd">
+				<h3>Front Right</h3>
+				<p id="FRspeedometer">0</p>
+			</div>
+			<div class="Indicator rearIndicator leftIndicator" id="RLInd">
+				<h3>Rear Left</h3>
+				<p id="RLspeedometer">0</p>
+			</div>
+			<div class="Indicator rearIndicator rightIndicator" id="RRInd">
+				<h3>Rear Right</h3>
+				<p id="RRspeedometer">0</p>
+			</div>
+		</div>
+	<script type="text/javascript" src="{{ url_for('static', filename='control_panel.js') }}"></script>
+
+	{% else %}
+		<h3>Please Login</h3>
+	    <p>You must be logged in to interact with MORSEVIEW. Please <a href="{{ url_for('users.login') }}">log in</a> or <a href="{{ url_for('users.register') }}">register</a>
+	    </p>	
+	{% endif %}
+{% endblock sidebar %}

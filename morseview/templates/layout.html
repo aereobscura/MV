@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SELECT MAIN CSS
+    	for flask dev server: 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mainV2.css') }}">
+    -->
+    <!-- 	
+    	for production: -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    	<!-- direct in browser:  
+    <link rel="stylesheet" type="text/css" href="../static/main.css"> -->
+
+
+    <!-- fonts -->
+     <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/generale-station" type="text/css"/>
+
+     <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/lcd" type="text/css"/>
+
+     <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/fantasque-sans-mono" type="text/css"/> 
+
+     <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/tomorrow" type="text/css"/> 
+    
+
+	{% if title %}
+		<title>MORSEVIEW - {{ title }}</title>
+	{% else %}
+		<title>MORSEVIEW</title>
+	{% endif %}
+</head>
+
+<body>
+
+<!-- Navigation Bar -->
+	<div class="menubar">
+		<div class="container">
+			<a class="logo" href="{{ url_for('main.home') }}">MORSE<span>VIEW</span></a>
+
+			<img id="mobile-cta" class="mobile-menu" src="{{ url_for('static', filename='assets/menu.svg') }}" alt="Open Navigation">
+			<!--
+				ginja2 code for <img src=""> ^above^ in flask server or production:
+					
+					{{ url_for('static', filename='assets/menu.svg') }} 
+					
+				use direct filepath for local viewing in browser only:
+
+				../static/assets/menu.svg
+			-->
+
+			<nav>
+				<img id="mobile-exit" class="mobile-menu-exit" src="{{ url_for('static', filename='assets/exit.svg') }}" alt="Close Navigation">
+				<!--
+				ginja2 code for <img src=""> ^above^ in flask server or production:
+					
+					{{ url_for('static', filename='assets/exit.svg') }} 
+					
+				use direct filepath for local viewing in browser only:
+
+					../static/assets/exit.svg
+				-->
+				<ul class="primary-nav">
+					<li><a href="{{ url_for('main.home') }}">feed</a></li>
+					
+					{% if current_user.is_authenticated %}
+
+	          		<li><a href="{{ url_for('posts.new_post') }}">comms.</a></li>
+
+	          		{% else %}
+	          		
+	          		<li><a href="{{ url_for('main.about') }}">info</a></li>
+	          		
+	          		{% endif %}
+					
+					<li><a href="{{ url_for('main.mission_control') }}">MISSION CONTROL</a></li>
+				</ul>
+
+				<ul class="secondary-nav">
+					
+					
+	          		{% if current_user.is_authenticated %}
+	        	
+		        	<li><a href="{{ url_for('users.account') }}">Account</a></li>
+		        	<li><a href="{{ url_for('users.logout') }}">Logout</a></li>
+		        	
+		        	{% else %}
+		        	
+
+		        	<li><a  href="{{ url_for('users.register') }}">register</a></li>
+					<li><a  href="{{ url_for('users.login') }}">AUTHENTICATE</a></li>
+					
+					{% endif %}
+					
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+
+
+	<main >
+		<div>
+		    <div class="primary-content">
+
+		    	
+		    	{% with messages = get_flashed_messages(with_categories=true) %}
+		    		{% if messages %}
+		    			{% for category, message in messages %}
+		    			
+
+		    				<div class="alert alert-{{ category }}">
+		    					{{ message }}
+		    				</div>
+
+		    			
+		    			{% endfor %}
+		    		{% endif %}
+		    	{% endwith%}
+		    	{% block content %}{% endblock content %}
+		    </div>
+	<!-- sidebar -->
+		    <div>
+		      <div class="secondary-content">
+		      	
+		      	{% if title == "Mission Control" %}
+
+		      		{% block sidebar %}{% endblock sidebar %}
+		      	
+		      	{% else %}
+		      		<!--
+		      		<div class="sidebar">
+						<h3>ginja sidebar block here. h3 header</h3>
+					    <p>You can put any information here you'd like.
+					      <ul>
+					        <li>item</li>
+					        <li>item</li>
+					        <li>item</li>
+					        <li>item</li>
+					      </ul>
+					    </p>
+					</div>
+					-->
+		      	{% endif %}
+
+		      </div>
+		    </div>
+		</div>
+	</main>
+
+	<section>
+		<div class="section"></div>
+	</section>
+
+	<footer>
+		<div class="container">
+			<div class="col1">
+				<ul>
+					<li><a href=#>EENIE</a></li>
+					<li><a href=#>MEENIE</a></li>
+				</ul>
+			</div>
+			<div class="col2">
+				<ul>
+					<li><a href=#>MYNEE</a></li>
+					<li><a href=#>MOH</a></li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+
+
+	<script type="text/javascript">
+		
+		const mobileBtn = document.getElementById('mobile-cta')
+			nav = document.querySelector('nav')
+			mobileBtnExit = document.getElementById('mobile-exit')
+
+		mobileBtn.addEventListener('click', () => {
+			
+			nav.classList.add('menu-btn')
+		})
+
+		mobileBtnExit.addEventListener('click', () => {
+			nav.classList.remove('menu-btn')
+		})
+	</script>
+	{% if title == "Mission Control" %}
+		<script type="text/javascript" src="{{ url_for('static', filename='control_panel.js') }}"></script>
+	{% endif %}
+</body>
+</html>
